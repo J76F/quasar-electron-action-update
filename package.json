@@ -11,7 +11,7 @@
     "dev": "quasar dev",
     "build": "quasar build",
     "electron:build": "quasar build -m electron -P never",
-    "electron:release": "quasar build -m electron -P onTagOrDraft"
+    "electron:release": "quasar build -m electron -P always"
   },
   "dependencies": {
     "@quasar/extras": "^1.16.4",
