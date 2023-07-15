@@ -12,9 +12,10 @@
         />
 
         <q-toolbar-title>
-          Quasar App
+          Quasar Test App
         </q-toolbar-title>
-
+        <div>App v{{ version }}</div>
+        <q-space />
         <div>Quasar v{{ $q.version }}</div>
       </q-toolbar>
     </q-header>
@@ -48,6 +49,7 @@
 <script>
 import { defineComponent, ref } from 'vue'
 import EssentialLink from 'components/EssentialLink.vue'
+import PACKAGE from '../../package.json'
 
 const linksList = [
   {
@@ -75,18 +77,6 @@ const linksList = [
     link: 'https://forum.quasar.dev'
   },
   {
-    title: 'Twitter',
-    caption: '@quasarframework',
-    icon: 'rss_feed',
-    link: 'https://twitter.quasar.dev'
-  },
-  {
-    title: 'Facebook',
-    caption: '@QuasarFramework',
-    icon: 'public',
-    link: 'https://facebook.quasar.dev'
-  },
-  {
     title: 'Quasar Awesome',
     caption: 'Community Quasar projects',
     icon: 'favorite',
@@ -109,7 +99,8 @@ export default defineComponent({
       leftDrawerOpen,
       toggleLeftDrawer () {
         leftDrawerOpen.value = !leftDrawerOpen.value
-      }
+      },
+      version: PACKAGE.version
     }
   }
 })

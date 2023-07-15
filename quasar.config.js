@@ -174,7 +174,7 @@ module.exports = configure(function (/* ctx */) {
       // specify the debugging port to use for the Electron app when running in development mode
       inspectPort: 5858,
 
-      bundler: 'packager', // 'packager' or 'builder'
+      bundler: 'builder', // 'packager' or 'builder'
 
       packager: {
         // https://github.com/electron-userland/electron-packager/blob/master/docs/api.md#options
@@ -192,7 +192,18 @@ module.exports = configure(function (/* ctx */) {
       builder: {
         // https://www.electron.build/configuration/configuration
 
-        appId: 'quasar-electron-action-update'
+        appId: 'quasar-electron-action-update',
+        win: {
+          target: [
+            {
+              target: 'nsis',
+              arch: ['x64']
+            }
+          ]
+        },
+        publish: {
+          provider: 'github'
+        }
       }
     },
 
