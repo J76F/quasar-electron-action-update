@@ -140,8 +140,7 @@ jobs:
   build:
     runs-on: ${{ matrix.os }}
     permissions:
-      contents: read
-      packages: write
+      contents: write
     strategy:
       matrix:
         os:
@@ -171,6 +170,8 @@ jobs:
 https://docs.github.com/en/actions/publishing-packages/publishing-nodejs-packages
 #### Authenticating to the destination repository
 To perform authenticated operations against the GitHub Packages registry in your workflow, you can use the `GITHUB_TOKEN`. The `GITHUB_TOKEN` secret is set to an access token for the repository each time a job in a workflow begins. You should set the permissions for this access token in the workflow file to grant read access for the contents scope and write access for the packages scope. For more information, see ["Automatic token authentication."](https://docs.github.com/en/actions/security-guides/automatic-token-authentication)
+
+Voor releases --> alleen `permissions: contents: write` is nodig
 
 ------------------ nog proberen --------------
 #### From GitHub
