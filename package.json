@@ -1,10 +1,11 @@
 {
   "name": "quasar-electron-action-update",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "Quasar, electron, action build met autoupdate test",
   "productName": "Test project Quasar, Electron, actions",
   "author": "J76F",
   "private": true,
+  "repository": "github:J76F/quasar-electron-action-update",
   "scripts": {
     "lint": "eslint --ext .js,.vue ./",
     "test": "echo \"No test specified\" && exit 0",
