@@ -328,7 +328,7 @@ toevoegen aan .\src\layouts\MainLayout.vue
           track-color="grey-3"
           class="q-ma-md"
         >
-          {{ autoUpdateDownloadPrecent }}%
+          {{ autoUpdateDownloadPercent }}%
           <q-tooltip>
             {{ autoUpdateDownloadMessage }}
           </q-tooltip>
@@ -348,9 +348,9 @@ toevoegen aan .\src\layouts\MainLayout.vue
       window.electron.onAutoUpdateMessage((event, message) => {
         this.autoUpdateMessage = message
       })
-      window.electron.onAutoUpdateDownload((event, precent, message) => {
+      window.electron.onAutoUpdateDownload((event, percent, message) => {
         this.autoUpdateDownloadMessage = message
-        this.autoUpdateDownloadPrecent = precent
+        this.autoUpdateDownloadPercent = percent
       })
     }
   }

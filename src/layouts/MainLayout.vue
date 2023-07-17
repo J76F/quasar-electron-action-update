@@ -28,7 +28,7 @@
           track-color="grey-3"
           class="q-ma-md"
         >
-          {{ autoUpdateDownloadPrecent }}%
+          {{ autoUpdateDownloadPercent }}%
           <q-tooltip>
             {{ autoUpdateDownloadMessage }}
           </q-tooltip>
@@ -135,9 +135,9 @@ export default defineComponent({
       window.electron.onAutoUpdateMessage((event, message) => {
         this.autoUpdateMessage = message
       })
-      window.electron.onAutoUpdateDownload((event, precent, message) => {
+      window.electron.onAutoUpdateDownload((event, percent, message) => {
         this.autoUpdateDownloadMessage = message
-        this.autoUpdateDownloadPrecent = precent
+        this.autoUpdateDownloadPercent = percent
       })
     }
   }
