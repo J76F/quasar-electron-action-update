@@ -208,6 +208,8 @@ Na bovenstaande stappen, GitHub Actions automatisch build de app;
 - bij elke push van nieuwe commits naar de `main` & `dev` branch
 - bij elke pull request naar de  `dev` branch.
 - bij elke push van nieuwe commits naar de `main` branch, GitHub Actions upload de artifacts/bestanden ook naar GitHub Releases, als een draft.
+(opmerking Quasar Publisch gebeurt niet wanneer het versienummer niet is opgehoogt tov een bestaande release:
+voorbeeld uit log: `GitHub release not created  reason=existing type not compatible with publishing type tag=v1.0.1 version=1.0.1 existingType=release publishingType=draft`)
 
 ## plaat in toolbar de versie van de app ter info
 open ./src/layouts/MainLayout.vue
