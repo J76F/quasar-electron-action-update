@@ -208,3 +208,57 @@ Na bovenstaande stappen, GitHub Actions automatisch build de app;
 - bij elke push van nieuwe commits naar de `main` & `dev` branch
 - bij elke pull request naar de  `dev` branch.
 - bij elke push van nieuwe commits naar de `main` branch, GitHub Actions upload de artifacts/bestanden ook naar GitHub Releases, als een draft.
+
+## plaat in toolbar de versie van de app ter info
+open ./src/layouts/MainLayout.vue
+vervang: 
+```vue
+        <q-toolbar-title>
+          Quasar Test App
+        </q-toolbar-title>
+
+        <div>Quasar v{{ $q.version }}</div>
+
+        ....
+        <script>
+
+        ...
+          setup () {
+          const leftDrawerOpen = ref(false)
+
+          return {
+            essentialLinks: linksList,
+            leftDrawerOpen,
+            toggleLeftDrawer () {
+              leftDrawerOpen.value = !leftDrawerOpen.value
+            }
+          }
+        }
+```
+door:
+```vue
+        <q-toolbar-title>
+          Quasar Test App
+        </q-toolbar-title>
+        <div>App v{{ version }}</div>
+        <q-space />
+        <div>Quasar v{{ $q.version }}</div>
+
+        ....
+        <script>
+        import PACKAGE from '../../package.json'
+
+        ...
+          setup () {
+          const leftDrawerOpen = ref(false)
+
+          return {
+            essentialLinks: linksList,
+            leftDrawerOpen,
+            toggleLeftDrawer () {
+              leftDrawerOpen.value = !leftDrawerOpen.value
+            },
+            version: PACKAGE.version
+          }
+        }
+```
