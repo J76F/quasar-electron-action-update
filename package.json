@@ -1,6 +1,6 @@
 {
   "name": "quasar-electron-action-update",
-  "version": "0.0.5",
+  "version": "1.0.0",
   "description": "Quasar, electron, action build met autoupdate test",
   "productName": "Test project Quasar, Electron, actions",
   "author": "J76F",
@@ -15,24 +15,25 @@
     "electron:release": "quasar build -m electron -P always"
   },
   "dependencies": {
-    "@quasar/extras": "^1.16.4",
+    "@quasar/extras": "^1.16.5",
+    "electron-log": "^4.4.8",
     "electron-updater": "^6.1.1",
-    "quasar": "^2.6.0",
-    "vue": "^3.0.0",
-    "vue-router": "^4.0.0"
+    "quasar": "^2.12.2",
+    "vue": "^3.3.4",
+    "vue-router": "^4.2.4"
   },
   "devDependencies": {
-    "@quasar/app-vite": "^1.3.0",
-    "autoprefixer": "^10.4.2",
+    "@quasar/app-vite": "^1.4.3",
+    "autoprefixer": "^10.4.14",
     "electron": "^25.3.0",
     "electron-builder": "^24.4.0",
-    "eslint": "^8.10.0",
-    "eslint-config-standard": "^17.0.0",
-    "eslint-plugin-import": "^2.19.1",
-    "eslint-plugin-n": "^15.0.0",
-    "eslint-plugin-promise": "^6.0.0",
-    "eslint-plugin-vue": "^9.0.0",
-    "postcss": "^8.4.14"
+    "eslint": "^8.45.0",
+    "eslint-config-standard": "^17.1.0",
+    "eslint-plugin-import": "^2.27.5",
+    "eslint-plugin-n": "^16.0.1",
+    "eslint-plugin-promise": "^6.1.1",
+    "eslint-plugin-vue": "^9.15.1",
+    "postcss": "^8.4.26"
   },
   "engines": {
     "node": "^18 || ^16 || ^14.19",

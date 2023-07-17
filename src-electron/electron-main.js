@@ -48,8 +48,10 @@ function createWindow () {
 }
 
 app.whenReady().then(() => {
-  autoUpdater.checkForUpdatesAndNotify()
   createWindow()
+  autoUpdater.logger = require('electron-log')
+  autoUpdater.logger.transports.file.level = 'info' // debug
+  autoUpdater.checkForUpdatesAndNotify()
 })
 
 app.on('window-all-closed', () => {

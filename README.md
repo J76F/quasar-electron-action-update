@@ -80,6 +80,10 @@ publish: {
   provider: 'github'
 }
 ```
+Open `package.json.js` en voeg toe 
+```json
+  "repository": "github:J76F/quasar-electron-action-update",
+```
 
 Now create a test build for the app.
 This will also enable Electron mode for the project, adding Electron-specific dependencies and source code.
@@ -106,8 +110,31 @@ import { autoUpdater } from 'electron-updater'
 app.whenReady().then(createWindow)
 // ... with this code
 app.whenReady().then(() => {
-  autoUpdater.checkForUpdatesAndNotify()
   createWindow()
+  autoUpdater.checkForUpdatesAndNotify()
+})
+```
+
+Eventueel add log tijdelijk voor debug naast de autoupdater:
+log bestand wordt geplaatst onder `%USERPROFILE%\AppData\Roaming\{app name}\logs\main.log`
+```bash
+npm install electron-updater --save
+npm install electron-log --save
+```
+Open `src-electron/electron-main.js` and make the following changes:
+
+```js
+// Add the following line near the top of the file
+import { autoUpdater } from 'electron-updater'
+
+// Replace this line ...
+app.whenReady().then(createWindow)
+// ... with this code
+app.whenReady().then(() => {
+  createWindow()
+  autoUpdater.logger = require('electron-log')
+  autoUpdater.logger.transports.file.level = 'info' // debug
+  autoUpdater.checkForUpdatesAndNotify()
 })
 ```
 
@@ -119,7 +146,7 @@ Add the following scripts to `package.json`:
 
 ```json
 "electron:build": "quasar build -m electron -P never",
-"electron:release": "quasar build -m electron -P onTagOrDraft",
+"electron:release": "quasar build -m electron -P always",
 ```
 
 Create a new file in `.github/workflows/main.yml` with the following code:
@@ -173,32 +200,11 @@ To perform authenticated operations against the GitHub Packages registry in your
 
 Voor releases --> alleen `permissions: contents: write` is nodig
 
------------------- nog proberen --------------
-#### From GitHub
+----------------
 
-1.  From your GitHub account settings, go to **Developer settings > Personal access tokens** and click **Generate new token**.
-2.  Give the new token a name, but more importantly, check the `repo` box to enable repository access for the token.
-    Then click **Generate token** and copy the value of the new token.
-3.  From the project repository settings, go to **Secrets** and click **New repository secret**.
-    Type `GH_TOKEN` into the name field, and paste the value of the personal access token into the value field, then click **Add secret**.
+## Continuous Workflow Github Actions
 
-## Continuous Workflow
-
-After the above steps are taken, GitHub Actions will automatically build the app for all platforms each time you push new commits to the repository (or a pull request targeting the `dev` branch is created).
-If new commits are pushed to the `main` branch, GitHub Actions will also upload the artifacts to GitHub Releases where the app will be ready for publishing.
-
-#### Recommended Steps
-
-The following steps are taken from [the default `electron-builder` workflow](https://www.electron.build/configuration/publish#recommended-github-releases-workflow), but modified to accommodate Git branching development models such as [this one](https://nvie.com/posts/a-successful-git-branching-model/).
-
-1.  [Draft a new release](https://help.github.com/articles/creating-releases/).
-    Set the "Tag version" to some version after the current `version` in your application `package.json`, and prefix it with `v`.
-    Make sure the tag targets the `main` branch.
-    "Release title" can be anything you want.
-2.  Push some commits to the `dev` branch.
-    Each successful CI build confirms that the app can be compiled on all platforms.
-3.  Create a release branch, add some commits that will prepare the app for release (e.g. increasing the `version` in `package.json`), then merge the release branch into `main`.
-4.  Push the new commits to the `main` branch.
-    Confirm that the artifacts from this CI build have been uploaded to the release draft.
-4.  Add a description (preferably release notes) to the release, and publish the release.
-5.  Merge the release branch back into `dev`, and delete the release branch.
+Na bovenstaande stappen, GitHub Actions automatisch build de app; 
+- bij elke push van nieuwe commits naar de `main` & `dev` branch
+- bij elke pull request naar de  `dev` branch.
+- bij elke push van nieuwe commits naar de `main` branch, GitHub Actions upload de artifacts/bestanden ook naar GitHub Releases, als een draft.
