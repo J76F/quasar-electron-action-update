@@ -49,6 +49,7 @@ function createWindow () {
 
 app.whenReady().then(() => {
   createWindow()
+
   autoUpdater.logger = require('electron-log')
   autoUpdater.logger.transports.file.level = 'info' // debug
   autoUpdater.checkForUpdatesAndNotify()
@@ -64,4 +65,36 @@ app.on('activate', () => {
   if (mainWindow === null) {
     createWindow()
   }
+})
+
+/* Send message to main window */
+function sendAutoUpdateMessage (message) {
+  mainWindow.webContents.send('autoUpdateMessage', message)
+}
+
+/* New Update Available */
+autoUpdater.on('error', (error) => {
+  console.log(error)
+  sendAutoUpdateMessage('Updates controle app fout, probeer het later opnieuw')
+})
+
+autoUpdater.on('checking-for-update', () => {
+  sendAutoUpdateMessage('Controle op app updates...')
+})
+
+autoUpdater.on('update-not-available', (info) => {
+  sendAutoUpdateMessage('Geen updates beschikbaar')
+})
+
+autoUpdater.on('update-available', (info) => {
+  sendAutoUpdateMessage(`Update versie ${info.version} beschikbaar`)
+})
+
+autoUpdater.on('download-progress', (progressObj) => {
+  const message = (`Download speed: ${progressObj.bytesPerSecond / 1024} kB/sec (${progressObj.transferred}/${progressObj.total})`)
+  mainWindow.webContents.send('autoUpdateDownload', progressObj.percent, message)
+})
+
+autoUpdater.on('update-downloaded', (info) => {
+  sendAutoUpdateMessage(`Versie ${info.version} gedownload, wordt na afsluiten geinstalleerd.`)
 })

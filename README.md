@@ -264,3 +264,94 @@ door:
           }
         }
 ```
+
+------
+## bovenstaand doet de update op de achtergrond en geeft de notificatie via een windows popup in het notivicatie centrum.
+Om de onderdelen naar de app te krijgen bewerk onderstaande:
+
+toevoegen aan .\src-electron\electron-main.js
+```js
+/* Send message to main window */
+function sendAutoUpdateMessage (message) {
+  mainWindow.webContents.send('autoUpdateMessage', message)
+}
+
+/* New Update Available */
+autoUpdater.on('error', (error) => {
+  console.log(error)
+  sendAutoUpdateMessage('Updates controle app fout, probeer het later opnieuw')
+})
+
+autoUpdater.on('checking-for-update', () => {
+  sendAutoUpdateMessage('Controle op app updates...')
+})
+
+autoUpdater.on('update-not-available', (info) => {
+  sendAutoUpdateMessage('Geen updates beschikbaar')
+})
+
+autoUpdater.on('update-available', (info) => {
+  sendAutoUpdateMessage(`Update versie ${info.version} beschikbaar`)
+})
+
+autoUpdater.on('download-progress', (progressObj) => {
+  const message = (`Download speed: ${progressObj.bytesPerSecond / 1024} kB/sec (${progressObj.transferred}/${progressObj.total})`)
+  mainWindow.webContents.send('autoUpdateDownload', progressObj.percent, message)
+})
+
+autoUpdater.on('update-downloaded', (info) => {
+  sendAutoUpdateMessage(`Versie ${info.version} gedownload, wordt na afsluiten geinstalleerd.`)
+})
+```
+toevoegen aan .\src-electron\electron-preload.js
+```js
+import { contextBridge, ipcRenderer } from 'electron'
+
+// Expose methods defined in electron-main.js
+contextBridge.exposeInMainWorld('electron', {
+  onAutoUpdateMessage: (message) => ipcRenderer.on('autoUpdateMessage', message),
+  onAutoUpdateDownload: (percent, message) => ipcRenderer.on('autoUpdateDownload', percent, message)
+})
+```
+toevoegen aan .\src\layouts\MainLayout.vue
+```
+/* in template */
+        <div>{{ autoUpdateMessage }}</div>
+        <q-circular-progress
+          v-if="autoUpdateDownloadPercent"
+          show-value
+          font-size="12px"
+          :value="autoUpdateDownloadPercent"
+          size="50px"
+          :thickness="0.22"
+          color="teal"
+          track-color="grey-3"
+          class="q-ma-md"
+        >
+          {{ autoUpdateDownloadPrecent }}%
+          <q-tooltip>
+            {{ autoUpdateDownloadMessage }}
+          </q-tooltip>
+        </q-circular-progress>
+        <q-space />
+/* onder script */
+  data () {
+    return {
+      autoUpdateMessage: '',
+      autoUpdateDownloadMessage: '',
+      autoUpdateDownloadPercent: 0
+    }
+  },
+/* onder script */
+  created () {
+    if (this.$q.platform.is.electron) {
+      window.electron.onAutoUpdateMessage((event, message) => {
+        this.autoUpdateMessage = message
+      })
+      window.electron.onAutoUpdateDownload((event, precent, message) => {
+        this.autoUpdateDownloadMessage = message
+        this.autoUpdateDownloadPrecent = precent
+      })
+    }
+  }
+```
