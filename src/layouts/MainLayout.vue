@@ -16,6 +16,24 @@
         </q-toolbar-title>
         <div>App v{{ version }}</div>
         <q-space />
+        <div>{{ autoUpdateMessage }}</div>
+        <q-circular-progress
+          v-if="autoUpdateDownloadPercent"
+          show-value
+          font-size="12px"
+          :value="autoUpdateDownloadPercent"
+          size="50px"
+          :thickness="0.22"
+          color="teal"
+          track-color="grey-3"
+          class="q-ma-md"
+        >
+          {{ autoUpdateDownloadPrecent }}%
+          <q-tooltip>
+            {{ autoUpdateDownloadMessage }}
+          </q-tooltip>
+        </q-circular-progress>
+        <q-space />
         <div>Quasar v{{ $q.version }}</div>
       </q-toolbar>
     </q-header>
@@ -91,6 +109,14 @@ export default defineComponent({
     EssentialLink
   },
 
+  data () {
+    return {
+      autoUpdateMessage: '',
+      autoUpdateDownloadMessage: '',
+      autoUpdateDownloadPercent: 0
+    }
+  },
+
   setup () {
     const leftDrawerOpen = ref(false)
 
@@ -101,6 +127,18 @@ export default defineComponent({
         leftDrawerOpen.value = !leftDrawerOpen.value
       },
       version: PACKAGE.version
+    }
+  },
+
+  created () {
+    if (this.$q.platform.is.electron) {
+      window.electron.onAutoUpdateMessage((event, message) => {
+        this.autoUpdateMessage = message
+      })
+      window.electron.onAutoUpdateDownload((event, precent, message) => {
+        this.autoUpdateDownloadMessage = message
+        this.autoUpdateDownloadPrecent = precent
+      })
     }
   }
 })

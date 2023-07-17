@@ -27,3 +27,11 @@
  *   }
  * }
  */
+
+import { contextBridge, ipcRenderer } from 'electron'
+
+// Expose methods defined in electron-main.js
+contextBridge.exposeInMainWorld('electron', {
+  onAutoUpdateMessage: (message) => ipcRenderer.on('autoUpdateMessage', message),
+  onAutoUpdateDownload: (percent, message) => ipcRenderer.on('autoUpdateDownload', percent, message)
+})
