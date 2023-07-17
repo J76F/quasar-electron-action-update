@@ -1,6 +1,6 @@
 {
   "name": "quasar-electron-action-update",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Quasar, electron, action build met autoupdate test",
   "productName": "Test project Quasar, Electron, actions",
   "author": "J76F",
@@ -12,6 +12,7 @@
     "dev": "quasar dev",
     "build": "quasar build",
     "electron:build": "quasar build -m electron -P never",
+    "electron:build.debug": "quasar build -m electron -d -P never",
     "electron:release": "quasar build -m electron -P always"
   },
   "dependencies": {
