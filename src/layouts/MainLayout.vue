@@ -28,7 +28,7 @@
           track-color="grey-3"
           class="q-ma-md"
         >
-          {{ autoUpdateDownloadPrecent }}%
+          {{ autoUpdateDownloadPercent }}%
           <q-tooltip>
             {{ autoUpdateDownloadMessage }}
           </q-tooltip>
