@@ -89,7 +89,7 @@ autoUpdater.on('update-not-available', (info) => {
 
 autoUpdater.on('update-available', (info) => {
   sendAutoUpdateMessage(`Update versie ${info.version} beschikbaar`)
-   mainWindow.webContents.send('autoUpdateDownload', 1, 'downloading')
+ mainWindow.webContents.send('autoUpdateDownload', 1, 'downloading')
 })
 
 autoUpdater.on('download-progress', (progressObj) => {
