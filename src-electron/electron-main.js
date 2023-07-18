@@ -52,7 +52,7 @@ app.whenReady().then(() => {
 
   autoUpdater.logger = require('electron-log')
   autoUpdater.logger.transports.file.level = 'debug' // debug, info
-  autoUpdater.isSilent = true
+  autoUpdater.isSilent = false
   autoUpdater.checkForUpdatesAndNotify()
 })
 

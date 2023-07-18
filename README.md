@@ -1,6 +1,7 @@
 # Test project 
 quasar met electron-updater, autoupdates, 
 build actions
+autoupates downloadblijkt alleen verschil in versies te downloaden :)
 
 ## Vooraf
 ### Node.js
