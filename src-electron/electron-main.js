@@ -5,6 +5,7 @@ import os from 'os'
 
 // needed in case process is undefined under Linux
 const platform = process.platform || os.platform()
+let autoUpdaterDownloaded = false
 
 try {
   if (platform === 'win32' && nativeTheme.shouldUseDarkColors === true) {
@@ -56,6 +57,7 @@ app.whenReady().then(() => {
 })
 
 app.on('window-all-closed', () => {
+  if (autoUpdaterDownloaded) autoUpdater.quitAndInstall(false, false)
   if (platform !== 'darwin') {
     app.quit()
   }
@@ -92,6 +94,7 @@ autoUpdater.on('download-progress', (progressObj) => {
 })
 
 autoUpdater.on('update-downloaded', (info) => {
+  autoUpdaterDownloaded = true
   const message = `Versie ${info.version} gedownload, wordt na afsluiten geinstalleerd.`
   mainWindow.webContents.send('autoUpdateMessage', message)
   mainWindow.webContents.send('autoUpdateDownload', 100, message)

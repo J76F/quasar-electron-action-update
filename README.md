@@ -360,3 +360,32 @@ toevoegen aan .\src\layouts\MainLayout.vue
     }
   }
 ```
+## om installatie niet uit te voeren bij afsluiten:
+voeg toe
+
+toevoegen aan .\src-electron\electron-main.js
+```js
+autoUpdater.autoInstallOnAppQuit = false  // default = true
+```
+
+## Standaard wordt het in de achtergrond geinstallerd.
+om op de voorgrond te installeren voeg onderstaande toe; na installatie wordt dan app weeropgestart (onduidelijk hoe dit te voorkomen.)
+
+toevoegen aan .\src-electron\electron-main.js
+```js
+let autoUpdaterDownloaded = false
+...
+app.on('window-all-closed', () => {
+  if (autoUpdaterDownloaded) autoUpdater.quitAndInstall(false, false) // <-- toevoegen
+  if (platform !== 'darwin') {
+    app.quit()
+  }
+})
+...
+autoUpdater.on('update-downloaded', (info) => {
+  autoUpdaterDownloaded = true // <-- toevoegen
+  const message = `Versie ${info.version} gedownload, wordt na afsluiten geinstalleerd.`
+  mainWindow.webContents.send('autoUpdateMessage', message)
+  mainWindow.webContents.send('autoUpdateDownload', 100, message)
+})
+```
