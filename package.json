@@ -9,8 +9,9 @@
   "scripts": {
     "lint": "eslint --ext .js,.vue ./",
     "test": "echo \"No test specified\" && exit 0",
-    "dev": "quasar dev",
+    "serve": "quasar dev",
     "build": "quasar build",
+    "electron:serve": "quasar dev -m electron",
     "electron:build": "quasar build -m electron -P never",
     "electron:build.debug": "quasar build -m electron -d -P never",
     "electron:release": "quasar build -m electron -P always"
