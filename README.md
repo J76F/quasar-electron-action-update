@@ -272,36 +272,37 @@ Om de onderdelen naar de app te krijgen bewerk onderstaande:
 
 toevoegen aan .\src-electron\electron-main.js
 ```js
-/* Send message to main window */
-function sendAutoUpdateMessage (message) {
-  mainWindow.webContents.send('autoUpdateMessage', message)
-}
-
+let updateDownloaded = false
+...
 /* New Update Available */
 autoUpdater.on('error', (error) => {
   console.log(error)
-  sendAutoUpdateMessage('Updates controle app fout, probeer het later opnieuw')
+  mainWindow.webContents.send('autoUpdateMessage', 'Updates controle app fout, probeer het later opnieuw')
 })
 
 autoUpdater.on('checking-for-update', () => {
-  sendAutoUpdateMessage('Controle op app updates...')
+  mainWindow.webContents.send('autoUpdateMessage', 'Controle op app updates...')
 })
 
 autoUpdater.on('update-not-available', (info) => {
-  sendAutoUpdateMessage('Geen updates beschikbaar')
+  mainWindow.webContents.send('autoUpdateMessage', 'Geen updates beschikbaar')
 })
 
 autoUpdater.on('update-available', (info) => {
-  sendAutoUpdateMessage(`Update versie ${info.version} beschikbaar`)
+  mainWindow.webContents.send('autoUpdateMessage', `Update versie ${info.version} beschikbaar`)
+  mainWindow.webContents.send('autoUpdateDownload', 1, 'downloading')
 })
 
 autoUpdater.on('download-progress', (progressObj) => {
-  const message = (`Download speed: ${progressObj.bytesPerSecond / 1024} kB/sec (${progressObj.transferred}/${progressObj.total})`)
+  const message = (`Download speed: ${(progressObj.bytesPerSecond / 1028576).toFixed(2)} Mb/sec (${(progressObj.transferred / 1028576).toFixed(2)}/${(progressObj.total / 1028576).toFixed(2)} Mb)`)
   mainWindow.webContents.send('autoUpdateDownload', progressObj.percent, message)
 })
 
 autoUpdater.on('update-downloaded', (info) => {
-  sendAutoUpdateMessage(`Versie ${info.version} gedownload, wordt na afsluiten geinstalleerd.`)
+  updateDownloaded = true
+  const message = `Versie ${info.version} gedownload, wordt na afsluiten geinstalleerd.`
+  mainWindow.webContents.send('autoUpdateMessage', message)
+  mainWindow.webContents.send('autoUpdateDownload', 100, message)
 })
 ```
 toevoegen aan .\src-electron\electron-preload.js
@@ -320,7 +321,8 @@ toevoegen aan .\src\layouts\MainLayout.vue
         <div>{{ autoUpdateMessage }}</div>
         <q-circular-progress
           v-if="autoUpdateDownloadPercent"
-          show-value
+          :indeterminate="indeterminateProgress"
+          :show-value="!indeterminateProgress"
           font-size="12px"
           :value="autoUpdateDownloadPercent"
           size="50px"
@@ -343,6 +345,11 @@ toevoegen aan .\src\layouts\MainLayout.vue
       autoUpdateDownloadPercent: 0
     }
   },
+  computed: {
+    indeterminateProgress () {
+      return this.autoUpdateDownloadMessage === 'downloading'
+    }
+  },
 /* onder script */
   created () {
     if (this.$q.platform.is.electron) {
@@ -351,7 +358,7 @@ toevoegen aan .\src\layouts\MainLayout.vue
       })
       window.electron.onAutoUpdateDownload((event, percent, message) => {
         this.autoUpdateDownloadMessage = message
-        this.autoUpdateDownloadPercent = percent
+        this.autoUpdateDownloadPercent = Math.round(percent)
       })
     }
   }

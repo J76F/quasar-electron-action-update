@@ -45,6 +45,7 @@ function createWindow () {
 
   mainWindow.on('closed', () => {
     mainWindow = null
+    if (updateDownloaded) autoUpdater.quitAndInstall(false, false)
   })
 }
 
@@ -57,7 +58,6 @@ app.whenReady().then(() => {
 })
 
 app.on('window-all-closed', () => {
-  if (updateDownloaded) autoUpdater.quitAndInstall(false, false)
   if (platform !== 'darwin') {
     app.quit()
   }
@@ -69,27 +69,22 @@ app.on('activate', () => {
   }
 })
 
-/* Send message to main window */
-function sendAutoUpdateMessage (message) {
-  mainWindow.webContents.send('autoUpdateMessage', message)
-}
-
 /* New Update Available */
 autoUpdater.on('error', (error) => {
   console.log(error)
-  sendAutoUpdateMessage('Updates controle app fout, probeer het later opnieuw')
+  mainWindow.webContents.send('autoUpdateMessage', 'Updates controle app fout, probeer het later opnieuw')
 })
 
 autoUpdater.on('checking-for-update', () => {
-  sendAutoUpdateMessage('Controle op app updates...')
+  mainWindow.webContents.send('autoUpdateMessage', 'Controle op app updates...')
 })
 
 autoUpdater.on('update-not-available', (info) => {
-  sendAutoUpdateMessage('Geen updates beschikbaar')
+  mainWindow.webContents.send('autoUpdateMessage', 'Geen updates beschikbaar')
 })
 
 autoUpdater.on('update-available', (info) => {
-  sendAutoUpdateMessage(`Update versie ${info.version} beschikbaar`)
+  mainWindow.webContents.send('autoUpdateMessage', `Update versie ${info.version} beschikbaar`)
   mainWindow.webContents.send('autoUpdateDownload', 1, 'downloading')
 })
 
@@ -101,6 +96,6 @@ autoUpdater.on('download-progress', (progressObj) => {
 autoUpdater.on('update-downloaded', (info) => {
   updateDownloaded = true
   const message = `Versie ${info.version} gedownload, wordt na afsluiten geinstalleerd.`
-  sendAutoUpdateMessage(message)
+  mainWindow.webContents.send('autoUpdateMessage', message)
   mainWindow.webContents.send('autoUpdateDownload', 100, message)
 })
