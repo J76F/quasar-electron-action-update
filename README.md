@@ -272,8 +272,6 @@ Om de onderdelen naar de app te krijgen bewerk onderstaande:
 
 toevoegen aan .\src-electron\electron-main.js
 ```js
-let updateDownloaded = false
-...
 /* New Update Available */
 autoUpdater.on('error', (error) => {
   console.log(error)
@@ -299,7 +297,6 @@ autoUpdater.on('download-progress', (progressObj) => {
 })
 
 autoUpdater.on('update-downloaded', (info) => {
-  updateDownloaded = true
   const message = `Versie ${info.version} gedownload, wordt na afsluiten geinstalleerd.`
   mainWindow.webContents.send('autoUpdateMessage', message)
   mainWindow.webContents.send('autoUpdateDownload', 100, message)

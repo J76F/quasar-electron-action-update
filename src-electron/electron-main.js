@@ -5,7 +5,6 @@ import os from 'os'
 
 // needed in case process is undefined under Linux
 const platform = process.platform || os.platform()
-let updateDownloaded = false
 
 try {
   if (platform === 'win32' && nativeTheme.shouldUseDarkColors === true) {
@@ -93,7 +92,6 @@ autoUpdater.on('download-progress', (progressObj) => {
 })
 
 autoUpdater.on('update-downloaded', (info) => {
-  updateDownloaded = true
   const message = `Versie ${info.version} gedownload, wordt na afsluiten geinstalleerd.`
   mainWindow.webContents.send('autoUpdateMessage', message)
   mainWindow.webContents.send('autoUpdateDownload', 100, message)
