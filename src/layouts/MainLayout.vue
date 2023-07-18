@@ -19,7 +19,8 @@
         <div>{{ autoUpdateMessage }}</div>
         <q-circular-progress
           v-if="autoUpdateDownloadPercent"
-          show-value
+          :indeterminate="indeterminateProgress"
+          :show-value="!indeterminateProgress"
           font-size="12px"
           :value="autoUpdateDownloadPercent"
           size="50px"
@@ -116,7 +117,11 @@ export default defineComponent({
       autoUpdateDownloadPercent: 0
     }
   },
-
+  computed: {
+    indeterminateProgress () {
+      return autoUpdateDownloadMessage === 'downloading'
+    }
+  },
   setup () {
     const leftDrawerOpen = ref(false)
 
