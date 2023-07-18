@@ -119,7 +119,7 @@ export default defineComponent({
   },
   computed: {
     indeterminateProgress () {
-      return autoUpdateDownloadMessage === 'downloading'
+      return this.autoUpdateDownloadMessage === 'downloading'
     }
   },
   setup () {
