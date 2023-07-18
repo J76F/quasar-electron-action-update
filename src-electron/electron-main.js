@@ -93,10 +93,12 @@ autoUpdater.on('update-available', (info) => {
 })
 
 autoUpdater.on('download-progress', (progressObj) => {
-  const message = (`Download speed: ${progressObj.bytesPerSecond / 1024} kB/sec (${progressObj.transferred}/${progressObj.total})`)
+  const message = (`Download speed: ${(progressObj.bytesPerSecond / 1028576).toFixed(2)} Mb/sec (${(progressObj.transferred / 1028576).toFixed(2)}/${(progressObj.total / 1028576).toFixed(2)} Mb)`)
   mainWindow.webContents.send('autoUpdateDownload', progressObj.percent, message)
 })
 
 autoUpdater.on('update-downloaded', (info) => {
-  sendAutoUpdateMessage(`Versie ${info.version} gedownload, wordt na afsluiten geinstalleerd.`)
+  const message = `Versie ${info.version} gedownload, wordt na afsluiten geinstalleerd.`
+  sendAutoUpdateMessage(message)
+  mainWindow.webContents.send('autoUpdateDownload', 100, message)
 })
