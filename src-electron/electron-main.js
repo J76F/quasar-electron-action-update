@@ -5,6 +5,7 @@ import os from 'os'
 
 // needed in case process is undefined under Linux
 const platform = process.platform || os.platform()
+const updateDownloaded = false
 
 try {
   if (platform === 'win32' && nativeTheme.shouldUseDarkColors === true) {
@@ -52,11 +53,11 @@ app.whenReady().then(() => {
 
   autoUpdater.logger = require('electron-log')
   autoUpdater.logger.transports.file.level = 'debug' // debug, info
-  autoUpdater.isSilent = false
   autoUpdater.checkForUpdatesAndNotify()
 })
 
 app.on('window-all-closed', () => {
+  if (updateDownloaded) autoUpdater.quitAndInstall(false, false)
   if (platform !== 'darwin') {
     app.quit()
   }
@@ -98,6 +99,7 @@ autoUpdater.on('download-progress', (progressObj) => {
 })
 
 autoUpdater.on('update-downloaded', (info) => {
+  updateDownloaded = true
   const message = `Versie ${info.version} gedownload, wordt na afsluiten geinstalleerd.`
   sendAutoUpdateMessage(message)
   mainWindow.webContents.send('autoUpdateDownload', 100, message)
