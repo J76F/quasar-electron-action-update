@@ -142,7 +142,7 @@ export default defineComponent({
       })
       window.electron.onAutoUpdateDownload((event, percent, message) => {
         this.autoUpdateDownloadMessage = message
-        this.autoUpdateDownloadPercent = math.round(percent)
+        this.autoUpdateDownloadPercent = Math.round(percent)
       })
     }
   }
