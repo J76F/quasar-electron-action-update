@@ -51,7 +51,8 @@ app.whenReady().then(() => {
   createWindow()
 
   autoUpdater.logger = require('electron-log')
-  autoUpdater.logger.transports.file.level = 'info' // debug
+  autoUpdater.logger.transports.file.level = 'debug' // debug, info
+  autoUpdater.isSilent = false
   autoUpdater.checkForUpdatesAndNotify()
 })
 
@@ -88,6 +89,7 @@ autoUpdater.on('update-not-available', (info) => {
 
 autoUpdater.on('update-available', (info) => {
   sendAutoUpdateMessage(`Update versie ${info.version} beschikbaar`)
+   mainWindow.webContents.send('autoUpdateDownload', 1, 'downloading')
 })
 
 autoUpdater.on('download-progress', (progressObj) => {
