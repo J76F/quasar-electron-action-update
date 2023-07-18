@@ -1,6 +1,6 @@
 {
   "name": "quasar-electron-action-update",
-  "version": "1.0.10",
+  "version": "1.0.11",
   "description": "Quasar, electron, action build met autoupdate test",
   "productName": "Test project Quasar, Electron, actions",
   "author": "J76F",
@@ -20,7 +20,7 @@
     "@quasar/extras": "^1.16.5",
     "electron-log": "^4.4.8",
     "electron-updater": "^6.1.1",
-    "quasar": "^2.12.2",
+    "quasar": "^2.12.3",
     "vue": "^3.3.4",
     "vue-router": "^4.2.4"
   },
