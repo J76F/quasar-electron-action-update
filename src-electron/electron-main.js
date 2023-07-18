@@ -45,7 +45,6 @@ function createWindow () {
 
   mainWindow.on('closed', () => {
     mainWindow = null
-    if (updateDownloaded) autoUpdater.quitAndInstall(false, false)
   })
 }
 
@@ -53,7 +52,7 @@ app.whenReady().then(() => {
   createWindow()
 
   autoUpdater.logger = require('electron-log')
-  autoUpdater.logger.transports.file.level = 'debug' // debug, info
+  autoUpdater.logger.transports.file.level = 'info' // debug, info
   autoUpdater.checkForUpdatesAndNotify()
 })
 
