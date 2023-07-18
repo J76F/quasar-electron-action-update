@@ -5,7 +5,7 @@ import os from 'os'
 
 // needed in case process is undefined under Linux
 const platform = process.platform || os.platform()
-const updateDownloaded = false
+let updateDownloaded = false
 
 try {
   if (platform === 'win32' && nativeTheme.shouldUseDarkColors === true) {
