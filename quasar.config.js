@@ -194,6 +194,7 @@ module.exports = configure(function (/* ctx */) {
 
         appId: 'quasar-electron-action-update',
         win: {
+          electronUpdaterCompatibility: ">=6.1.1",
           target: [
             {
               target: 'nsis',
