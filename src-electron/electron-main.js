@@ -45,6 +45,7 @@ function createWindow () {
 
   mainWindow.on('closed', () => {
     mainWindow = null
+    if (autoUpdaterDownloaded) autoUpdater.quitAndInstall(false, false)
   })
 }
 
@@ -57,7 +58,6 @@ app.whenReady().then(() => {
 })
 
 app.on('window-all-closed', () => {
-  if (autoUpdaterDownloaded) autoUpdater.quitAndInstall(false, false)
   if (platform !== 'darwin') {
     app.quit()
   }

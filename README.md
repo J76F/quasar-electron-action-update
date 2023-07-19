@@ -375,12 +375,10 @@ toevoegen aan .\src-electron\electron-main.js
 ```js
 let autoUpdaterDownloaded = false
 ...
-app.on('window-all-closed', () => {
-  if (autoUpdaterDownloaded) autoUpdater.quitAndInstall(false, false) // <-- toevoegen
-  if (platform !== 'darwin') {
-    app.quit()
-  }
-})
+  mainWindow.on('closed', () => {
+    mainWindow = null
+    if (autoUpdaterDownloaded) autoUpdater.quitAndInstall(false, false) //<-- toevoegen
+  })
 ...
 autoUpdater.on('update-downloaded', (info) => {
   autoUpdaterDownloaded = true // <-- toevoegen
