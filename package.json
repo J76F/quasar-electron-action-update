@@ -1,6 +1,6 @@
 {
   "name": "quasar-electron-action-update",
-  "version": "1.1.4",
+  "version": "1.1.5",
   "description": "Quasar, electron, action build met autoupdate test",
   "productName": "Test project Quasar, Electron, actions",
   "author": "J76F",

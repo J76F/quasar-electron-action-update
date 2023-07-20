@@ -387,3 +387,13 @@ autoUpdater.on('update-downloaded', (info) => {
   mainWindow.webContents.send('autoUpdateDownload', 100, message)
 })
 ```
+
+zet de start checken eventeel op moment dat mainwindows geladen is zodat de eerste meldingen ook naar render deel gestuurd kunnen worden:
+```js
+// vervang
+  autoUpdater.checkForUpdatesAndNotify()
+//door
+  mainWindow.on('ready-to-show', () => {
+    autoUpdater.checkForUpdatesAndNotify()
+  })
+```

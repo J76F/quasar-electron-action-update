@@ -54,7 +54,9 @@ app.whenReady().then(() => {
 
   autoUpdater.logger = require('electron-log')
   autoUpdater.logger.transports.file.level = 'info' // debug, info
-  autoUpdater.checkForUpdatesAndNotify()
+  mainWindow.on('ready-to-show', () => {
+    autoUpdater.checkForUpdatesAndNotify()
+  })
 })
 
 app.on('window-all-closed', () => {
