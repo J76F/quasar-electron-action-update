@@ -81,7 +81,7 @@ publish: {
   provider: 'github'
 }
 ```
-Open `package.json.js` en voeg toe 
+Open `package.json` en voeg toe 
 ```json
   "repository": "github:J76F/quasar-electron-action-update",
 ```
