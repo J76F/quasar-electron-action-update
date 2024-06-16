@@ -22,6 +22,8 @@ in vscode terminal, in rootmap waar submap `quasar-electron-action-update` in ko
 ```bash
 npm init quasar
 ```
+`npm` stays on the version in which you run `npm init quasar` first. So, to use later versions of `create-quasar`, run `npm init quasar@latest` so that it fetches the latest version.
+
 - What would you like to build? --> App with Quasar CLI, let's go! 
 - Project folder: --> quasar-electron-action-update
 - Pick Quasar version: --> Quasar v2 (Vue 3 | latest and greatest)
